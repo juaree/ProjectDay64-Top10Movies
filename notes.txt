@@ -1,0 +1,57 @@
+render_template vs redirect
+
+Redirect sends the browser to a different URL, render_template renders the webpage the user requested.
+
+One example of a redirect is when a user requests a webpage that requires the user to be logged in. If the user is logged in,
+render_template is called to display the page. If the user is not logged in, they are instead redirected to the login page.
+Once the user has been successfully logged in, they can be redirected back to the first page again.
+
+What makes this tricky is that you don't really have to do it in the example above using Flask.
+You can have flask render_template the login instead if the user is not logged in.
+
+I use redirect when I want to clear any variables sent in a request. If the user has been filling out some form with GET or
+POST variables attached and I want to clear them, then I use a redirect to have the browser send a new clean GET to the new URL.
+
+
+/////////////////////////////////////////////////
+
+
+redirect returns a 302 header to the browser, with its Location header as the URL for the index function. render_template
+returns a 200, with the index.html template returned as the content at that URL.
+
+
+/////////////////////////////////////////////////
+
+
+When redirect is used, the function is called (edit() in your eg) and a parameter can be passed in the URL (id in your eg).
+This allows the parameter to be used through the request.args.get() method.
+
+Using render_template in the eg above would only result in edit.html being served. The other functionalities provided for by the
+edit function wld not be executed if this were to be written in another function. So for instance, the edit_form variable which
+is passed in the example above wld need to be created if render_template is used in a diff funtiom from edit().
+
+
+/////////////////////////////////////////////////
+
+
+On a much simpler note, consider this - If none of your endpoints rendered templates, and all your redirects were to url's of
+endpoints within your app, there would be nothing to render!
+
+It's like pointing the way to a place that won't show itself.
+
+
+////////////////////////////////////////////////
+
+
+One URL endpoint can have many different render_template statements and thus render different page templates from your
+templates folder. On the other hand, using a redirect changes the URL itself and thus calls the methods associated to that
+route.
+
+
+///////////////////////////////////////////////
+
+
+redirect says to the browser "I'm not going to do this but here's another url. You should go there instead." Typically
+the browser will automatically make that new url get request.
+
+render_template sends back some HTML for the browser to display.
